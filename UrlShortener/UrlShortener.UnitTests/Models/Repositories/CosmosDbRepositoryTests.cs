@@ -37,13 +37,7 @@ namespace UrlShortener.UnitTests.Models.Repositories
         public async Task CreateShortUrl_AnyInput_Successful()
         {
             // Arrange
-            _cosmosDbOptionsMock.SetupGet(x => x.Value)
-                .Returns(new CosmosDbOptions())
-                .Verifiable();
-
-            _urlInformationResponseMock.Setup(x => x.Resource)
-                .Returns(_fixture.Create<UrlInformation>())
-                .Verifiable();
+            SetupDefaultCosmosDbMocks();
 
             _cosmosClientMock.Setup(x => x.GetContainer(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(_cosmosContainerMock.Object);
@@ -59,11 +53,6 @@ namespace UrlShortener.UnitTests.Models.Repositories
 
             // Assert
             result.Should().BeTrue();
-        }
-
-        private CosmosDbRepository CreateCosmosDbRepositorySut()
-        {
-            return new CosmosDbRepository(_cosmosClientMock.Object, _cosmosDbOptionsMock.Object);
         }
 
         [TestMethod]
@@ -144,6 +133,11 @@ namespace UrlShortener.UnitTests.Models.Repositories
 
             // Assert
             result.Should().BeNull();
+        }
+
+        private CosmosDbRepository CreateCosmosDbRepositorySut()
+        {
+            return new CosmosDbRepository(_cosmosClientMock.Object, _cosmosDbOptionsMock.Object);
         }
     }
 }

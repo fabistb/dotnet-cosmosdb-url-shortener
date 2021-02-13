@@ -30,13 +30,9 @@ namespace UrlShortener.Services
         public async Task<ShortUrlResponse> CreateShortUrl(UrlToShorten urlToShorten)
         {
             if (!urlToShorten.LongUrl.Contains("https://") || !urlToShorten.LongUrl.Contains("http://"))
-            {
                 if (urlToShorten.LongUrl.StartsWith("www."))
-                {
                     urlToShorten.LongUrl = $"{Https}{urlToShorten.LongUrl}";
-                }
-            }
-            
+
             var validUri = Uri.IsWellFormedUriString(urlToShorten.LongUrl, UriKind.Absolute);
 
             if (validUri == false)
@@ -57,13 +53,11 @@ namespace UrlShortener.Services
 
             var success = await _cosmosDbRepository.CreateShortUrl(urlInformation);
 
-            if (success == true)
-            {
+            if (success)
                 return new ShortUrlResponse
                 {
                     ShortUrl = urlInformation.ShortUrl
                 };
-            }
 
             return null;
         }

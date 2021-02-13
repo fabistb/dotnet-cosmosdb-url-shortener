@@ -7,7 +7,7 @@
         public string CosmosNamespace = "urlshortener";
 
         public string ShortUrlContainer = "shorturl";
-        
+
         public string CosmosDbConnectionString { get; set; }
     }
 }

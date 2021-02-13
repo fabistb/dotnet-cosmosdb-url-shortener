@@ -8,6 +8,5 @@ namespace UrlShortener.Services
         Task<ShortUrlResponse> CreateShortUrl(UrlToShorten urlToShorten);
 
         Task<string> GetShortUrl(string shortId);
-
     }
 }

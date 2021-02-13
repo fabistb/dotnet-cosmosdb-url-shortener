@@ -8,7 +8,6 @@ namespace UrlShortener.Utilities
 {
     public static class CosmosDbServiceExtension
     {
-
         public static IServiceCollection AddCosmosDb(this IServiceCollection service, IConfiguration configuration)
         {
             configuration["CosmosDb:CosmosDbConnectionString"] = configuration["cosmos-connectionstring"];
@@ -18,6 +17,5 @@ namespace UrlShortener.Utilities
                     serviceProvider.GetService<IOptions<CosmosDbOptions>>()?.Value.CosmosDbConnectionString));
             return service;
         }
-        
     }
 }

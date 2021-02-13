@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Options;
@@ -31,7 +30,7 @@ namespace UrlShortener.Models.Repositories
                 return false;
             }
         }
-        
+
         public async Task<UrlInformation> GetShortUrl(string shortId)
         {
             try
@@ -45,7 +44,7 @@ namespace UrlShortener.Models.Repositories
                 return null;
             }
         }
-        
+
         private Container GetCosmosDbContainer()
         {
             return _cosmosClient.GetContainer(_cosmosDbOptions.Value.CosmosNamespace,

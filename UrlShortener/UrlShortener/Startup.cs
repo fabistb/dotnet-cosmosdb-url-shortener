@@ -2,11 +2,9 @@ using System;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using UrlShortener.Configuration;
 using UrlShortener.Models.Repositories;
 using UrlShortener.Services;
 using UrlShortener.Utilities;
@@ -33,12 +31,12 @@ namespace UrlShortener
             services.AddTransient<ICosmosDbRepository, CosmosDbRepository>();
             services.AddSingleton<Random>();
             services.AddSingleton<Clock>();
-            
+
             services.AddApplicationInsightsTelemetry(new ApplicationInsightsServiceOptions
             {
                 EnableAdaptiveSampling = false
             });
-            
+
             services.AddHealthChecks();
             services.AddControllers();
         }

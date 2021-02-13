@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoFixture;
-using Castle.Core.Internal;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,10 +16,10 @@ namespace UrlShortener.UnitTests.Services
     public class UrlShortenerServiceTests
     {
         private readonly Fixture _fixture = new Fixture();
-        private MockRepository _mockRepository;
-        private Mock<ICosmosDbRepository> _cosmosDbRepositoryMock;
         private Mock<IHttpContextAccessor> _contextAccessorMock;
-        
+        private Mock<ICosmosDbRepository> _cosmosDbRepositoryMock;
+        private MockRepository _mockRepository;
+
         [TestInitialize]
         public void Initialize()
         {
@@ -28,7 +27,7 @@ namespace UrlShortener.UnitTests.Services
             _cosmosDbRepositoryMock = _mockRepository.Create<ICosmosDbRepository>();
             _contextAccessorMock = _mockRepository.Create<IHttpContextAccessor>();
         }
-        
+
         [TestMethod]
         [DataRow("https://www.wikipedia.org/")]
         [DataRow("http://www.wikipedia.org/")]
@@ -41,37 +40,37 @@ namespace UrlShortener.UnitTests.Services
             {
                 LongUrl = uri
             };
-            
+
             _cosmosDbRepositoryMock.Setup(x => x.CreateShortUrl(It.IsAny<UrlInformation>()))
                 .Returns(Task.FromResult(true))
                 .Verifiable();
-            
+
             MockHttpAccessorContext();
 
             // Act
             var sut = CreateUrlShortenerServiceSut();
             var result = await sut.CreateShortUrl(urlToShortenItem);
-            
+
             // Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<ShortUrlResponse>();
         }
-        
-        
+
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public async Task CreateShortUrl_AnyInput_ArgumentException()
         {
             // Arrange
-            
+
             // Act
             var sut = CreateUrlShortenerServiceSut();
             var result = await sut.CreateShortUrl(_fixture.Create<UrlToShorten>());
-            
+
             // Assert
             Assert.Fail();
         }
-        
+
         [TestMethod]
         public async Task CreateShortUrl_AnyInput_Fails()
         {
@@ -80,17 +79,17 @@ namespace UrlShortener.UnitTests.Services
             {
                 LongUrl = "https://www.wikipedia.org/"
             };
-            
+
             _cosmosDbRepositoryMock.Setup(x => x.CreateShortUrl(It.IsAny<UrlInformation>()))
                 .Returns(Task.FromResult(false))
                 .Verifiable();
-            
+
             MockHttpAccessorContext();
 
             // Act
             var sut = CreateUrlShortenerServiceSut();
             var result = await sut.CreateShortUrl(urlToShortenItem);
-            
+
             // Assert
             result.Should().BeNull();
         }
@@ -112,36 +111,36 @@ namespace UrlShortener.UnitTests.Services
             // Arrange
             _cosmosDbRepositoryMock.Setup(x => x.GetShortUrl(It.IsAny<string>()))
                 .Returns(Task.FromResult(_fixture.Create<UrlInformation>())).Verifiable();
-            
+
             // Act
             var sut = CreateUrlShortenerServiceSut();
             var result = await sut.GetShortUrl(_fixture.Create<string>());
-            
+
             // Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<string>();
         }
-        
+
         [TestMethod]
         public async Task GetShortUrl_AnyInput_SuccessfulNull()
         {
             // Arrange
             _cosmosDbRepositoryMock.Setup(x => x.GetShortUrl(It.IsAny<string>()))
                 .Returns(Task.FromResult((UrlInformation) null)).Verifiable();
-            
+
             // Act
             var sut = CreateUrlShortenerServiceSut();
             var result = await sut.GetShortUrl(_fixture.Create<string>());
-            
+
             // Assert
             result.Should().BeNull();
         }
-        
+
 
         private UrlShortenerService CreateUrlShortenerServiceSut()
         {
             return new UrlShortenerService(_cosmosDbRepositoryMock.Object, new Random(), new Clock(),
-               _contextAccessorMock.Object);
+                _contextAccessorMock.Object);
         }
     }
 }
