@@ -5,7 +5,8 @@ namespace UrlShortener.Models
 {
     public class UrlInformation
     {
-        [JsonProperty("id")] public string Id { get; set; }
+        [JsonProperty("id")] 
+        public string Id { get; set; }
 
         public string ShortId { get; set; }
 
