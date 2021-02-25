@@ -6,7 +6,7 @@ Has never been tested on a scale or productive environment.
 
 ### Setup
 #### Local
-Shut theoretically also work with the Cosmos Db local emulator but not tested.
+Should also work with the Cosmos Db local emulator but not tested.
 
 https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/cosmos-db/local-emulator.md
 
